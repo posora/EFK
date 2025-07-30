@@ -1,0 +1,31 @@
+apiVersion: v1
+data:
+  jpress.conf: |+
+    # 在宿主机准备 jpress.conf
+    <source>
+      @type tail
+      path /var/lib/docker/containers/e9195d42f695429eab0c027d6587648cc32b2a11a9fcb0d450a21569a5d9165f/*.log
+      pos_file /var/log/fluentd-jpress.pos
+      tag docker.jpress
+      read_from_head true
+      <parse>
+        @type json
+        time_key time
+        time_format %Y-%m-%dT%H:%M:%S.%NZ
+      </parse>
+    </source>
+
+    <match docker.jpress>
+      @type elasticsearch
+      host  elasticsearch.kube-logging.svc.cluster.local
+      port  9200
+      logstash_format true
+      logstash_prefix jpress
+      include_timestamp true
+    </match>
+    EOF
+
+kind: ConfigMap
+metadata:
+  name: fluentd-jpress-conf
+  namespace: kube-logging

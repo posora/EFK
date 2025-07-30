@@ -27,6 +27,7 @@ spec:
       labels:
         app: elasticsearch
     spec:
+      nodeName: k8s-node3
       containers:
       - name: elasticsearch
         image: crpi-yd1hst2e6z04e4nc.cn-hangzhou.personal.cr.aliyuncs.com/posora/elasticsearch:8.15.2

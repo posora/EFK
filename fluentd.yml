@@ -84,6 +84,9 @@ spec:
           readOnly: true
         - name: journal
           mountPath: /var/log/journal
+        - name: config-volume
+          mountPath: /fluentd/etc/conf.d/jpress.conf
+          subPath: jpress.conf
       terminationGracePeriodSeconds: 30
       volumes:
       - name: varlog
@@ -95,3 +98,6 @@ spec:
       - name: journal
         hostPath:
           path: /var/log/journal
+      - name: config-volume
+        configMap:
+          name: fluentd-jpress-conf
